@@ -6,8 +6,7 @@ jobs:
     - image: gcc:8.2
     steps:
     - checkout
-    - run:
-      command: make test
+    - run: make test
 
 # version: 2.1
 # jobs:
