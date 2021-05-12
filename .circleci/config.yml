@@ -3,4 +3,5 @@ jobs:
   build:
     woking_directory: test_tests
           steps:
+          - checkout
           - run: make test
