@@ -1,6 +1,7 @@
 version: 2.1
 jobs:
   build:
+    working_directory: ~/test_tests
     docker:
     - image: ubuntu-1604:201903-01
     steps:
