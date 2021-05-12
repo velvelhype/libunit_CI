@@ -1,7 +1,17 @@
-version: 2.1
+version: 2
 jobs:
   build:
-    woking_directory: ~/test_tests
-          steps:
-          - checkout
-          - run: make test
+    working_directory: ~/test_tests
+    docker:
+    - image: circleci/golang:1
+    steps:
+    - checkout
+    - run: make test
+
+# version: 2.1
+# jobs:
+#   build:
+#     woking_directory: ~/test_tests
+#     steps:
+#     - checkout
+#     - run: make test
