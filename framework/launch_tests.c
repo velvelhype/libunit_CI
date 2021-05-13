@@ -1,82 +1,107 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   launch_tests.c                                     :+:      :+:    :+:   */
+/*   launch_tests_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nohtou <nohtou@student.42.tokyo.jp>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 18:15:24 by nohtou            #+#    #+#             */
-/*   Updated: 2021/05/10 19:27:46 by nohtou           ###   ########.fr       */
+/*   Updated: 2021/05/13 19:56:47 by nohtou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "libft.h"
 #include "private.h"
 
-void	print_result(t_unit_tests *unit_tests, t_unit_test *test)
+void	print_signal(int stat_loc)
 {
-	int	stat_loc;
+	if (WTERMSIG(stat_loc) == SIGSEGV)
+		ft_putstr_fd(" : \033[31m[SIGV]\033[0m\n", 1);
+	else if (WTERMSIG(stat_loc) == SIGBUS)
+		ft_putstr_fd(" : \033[31m[BUSE]\033[0m\n", 1);
+	else if (WTERMSIG(stat_loc) == SIGALRM)
+		ft_putstr_fd(" : \033[31m[TIMEOUT]\033[0m\n", 1);
+	else if (WTERMSIG(stat_loc) == SIGFPE)
+		ft_putstr_fd(" : \033[31m[SIGFPE]\033[0m\n", 1);
+	else if (WTERMSIG(stat_loc) == SIGABRT)
+		ft_putstr_fd(" : \033[31m[SIGABRT]\033[0m\n", 1);
+	else
+		ft_putstr_fd(" : \033[31m[ERROR]\033[0m", 1);
+}
 
-	wait(&stat_loc);
+void	print_result(t_unit_tests *unit_tests, t_unit_test *test, int stat_loc)
+{
+	ft_putstr_fd("\t", 1);
+	ft_putstr_fd((char *)test->test_name, 1);
 	if (WIFSIGNALED(stat_loc))
-	{
-		if (WTERMSIG(stat_loc) == SIGSEGV)
-			printf("\t%-30s : [SIGV]\n", test->test_name);
-		if (WTERMSIG(stat_loc) == SIGBUS)
-			printf("\t%-30s : [BUSE]\n", test->test_name);
-	}
+		print_signal(stat_loc);
 	else if (WIFEXITED(stat_loc))
 	{
 		if (WEXITSTATUS(stat_loc) == 0)
 		{
-			printf("\t%-30s : [OK]\n", test->test_name);
+			ft_putstr_fd(" : \033[32m[OK]\033[0m\n", 1);
 			unit_tests->success++;
 		}
 		else if (WEXITSTATUS(stat_loc) == (-1 & 0xff))
-		{
-			printf("\t%-30s : [KO]\n", test->test_name);
-		}
+			ft_putstr_fd(" : \033[31m[KO]\033[0m\n", 1);
+		else
+			ft_putstr_fd(" : \033[31m[ERROR]\033[0m\n", 1);
 	}
 	unit_tests->total++;
 }
 
-int fork_place(t_unit_tests *unit_tests, t_unit_test	*test)
+void	launch_func(t_unit_tests *unit_tests, int (*func)(void))
 {
-		pid_t	pid = fork();
+	pid_t	pid;
+	int		result;
 
-		int result;
-		if (pid == -1)
-			return (ERROR);
-		if (pid == 0)
-		{
-			result = test->test_func();
-			free_tests(unit_tests);
-			exit(result);
-			//_exit(result);
+	unit_tests->start_clock = clock();
+	pid = fork();
+	if (pid == -1)
+		exit(ERROR);
+	if (pid == 0)
+	{
+		alarm(5);
+		result = func();
+		free_tests(unit_tests);
+		exit(result);
+	}
+}
 
-		}
-		//exit(result);
-		print_result(unit_tests, test);
-
-		return 0;
+void	print_total(t_unit_tests *unit_tests)
+{
+	ft_putnbr_fd(unit_tests->success, 1);
+	ft_putstr_fd(" / ", 1);
+	ft_putnbr_fd(unit_tests->total, 1);
+	ft_putstr_fd(" tests checked\n\n", 1);
 }
 
 int	launch_tests(t_unit_tests *unit_tests)
 {
 	t_unit_test	*test;
-	int result;
+	int			stat_loc;
+	int			fd;
+
+	fd = open_report(unit_tests);
 	test = unit_tests->head;
 	while (test)
 	{
-		result = fork_place(unit_tests, test);
-				test = test->next;
+		launch_func(unit_tests, test->test_func);
+		wait(&stat_loc);
+		unit_tests->end_clock = clock();
+		print_result(unit_tests, test, stat_loc);
+		write_report(fd, unit_tests, test, stat_loc);
+		test = test->next;
 	}
-	printf("%d / %d tests checked\n", unit_tests->success, unit_tests->total);
+	print_total(unit_tests);
+	write_report_total(fd, unit_tests);
+	close(fd);
 	if (unit_tests->success == unit_tests->total)
 		return (0);
 	else
-		return (-1);
+		return (0xff);
 }

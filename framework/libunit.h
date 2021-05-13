@@ -6,12 +6,14 @@
 /*   By: nohtou <nohtou@student.42.tokyo.jp>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 18:16:52 by nohtou            #+#    #+#             */
-/*   Updated: 2021/05/10 19:27:22 by nohtou           ###   ########.fr       */
+/*   Updated: 2021/05/13 16:39:04 by nohtou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBUNIT_H
 # define LIBUNIT_H
+
+# include <time.h>
 
 typedef struct s_unit_test
 {
@@ -26,6 +28,8 @@ typedef struct s_unit_tests
 	t_unit_test	*tail;
 	int			success;
 	int			total;
+	clock_t		start_clock;
+	clock_t		end_clock;
 }	t_unit_tests;
 
 void	init_tests(t_unit_tests *list);
