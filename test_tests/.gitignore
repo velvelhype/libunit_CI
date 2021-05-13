@@ -1,7 +1,0 @@
-.DS_Store
-*.swp
-*.swo
-*.swn
-*.o
-libunit.a
-strlen_unit_test

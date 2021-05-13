@@ -1,26 +1,26 @@
-	Basic test          : [OK]		212 ms
-	Long string test    : [OK]		455 ms
-	One letter test     : [OK]		590 ms
-	Zero length test    : [OK]		192 ms
-	Non-printable test  : [OK]		205 ms
+	Basic test          : [OK]		2862 ms
+	Long string test    : [OK]		2479 ms
+	One letter test     : [OK]		2122 ms
+	Zero length test    : [OK]		1868 ms
+	Non-printable test  : [OK]		1830 ms
 5 / 5 tests checked
 
-	Basic test                    : [OK]		144 ms
-	Minus test                    : [OK]		121 ms
-	Plus test                     : [OK]		124 ms
-	Space test                    : [OK]		130 ms
-	Space test                    : [OK]		119 ms
-	Space minus test              : [OK]		126 ms
-	Space plus test               : [OK]		141 ms
-	Plus minus test               : [OK]		128 ms
-	Void string test              : [OK]		137 ms
-	Floating point number test    : [OK]		278 ms
-	Non digit tail test           : [OK]		168 ms
-	Int max test                  : [OK]		157 ms
-	Int mini test                 : [OK]		145 ms
-	Overflow test                 : [OK]		153 ms
-	Underflow test                : [OK]		128 ms
-	Zero test                     : [OK]		126 ms
-	000 head test                 : [OK]		213 ms
+	Basic test                    : [OK]		1878 ms
+	Minus test                    : [OK]		1688 ms
+	Plus test                     : [OK]		1629 ms
+	Space test                    : [OK]		1627 ms
+	Space test                    : [OK]		1592 ms
+	Space minus test              : [OK]		1752 ms
+	Space plus test               : [OK]		1611 ms
+	Plus minus test               : [OK]		1500 ms
+	Void string test              : [OK]		1509 ms
+	Floating point number test    : [OK]		1452 ms
+	Non digit tail test           : [OK]		1336 ms
+	Int max test                  : [OK]		1287 ms
+	Int mini test                 : [OK]		1335 ms
+	Overflow test                 : [OK]		1439 ms
+	Underflow test                : [OK]		1264 ms
+	Zero test                     : [OK]		1232 ms
+	000 head test                 : [OK]		1189 ms
 17 / 17 tests checked
 
