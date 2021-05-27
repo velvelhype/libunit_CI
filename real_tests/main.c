@@ -8,6 +8,7 @@ int	main(void)
 	ft_atoi_launcher();
 	char *imp;
 	imp = (char*)malloc(100);
+	imp = (char*)malloc(100);
 	system("leaks a.out");
 	return (0);
 }
