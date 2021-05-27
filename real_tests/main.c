@@ -9,7 +9,7 @@ int	main(void)
 	char *imp;
 	imp = (char*)malloc(100);
 	imp = (char*)malloc(100);
-	if(!system("leaks a.out"))
+	if(system("leaks a.out"))
 		return 1;
 	return (0);
 }
