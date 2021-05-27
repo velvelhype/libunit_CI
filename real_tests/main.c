@@ -6,6 +6,6 @@ int	main(void)
 {
 	ft_strlen_launcher();
 	ft_atoi_launcher();
-	systems("leaks a.out");
+	system("leaks a.out");
 	return (0);
 }
