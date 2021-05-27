@@ -6,7 +6,7 @@ int	main(void)
 {
 	ft_strlen_launcher();
 	ft_atoi_launcher();
-	chat *imp;
+	char *imp;
 	imp = (char*)malloc(100);
 	system("leaks a.out");
 	return (0);
